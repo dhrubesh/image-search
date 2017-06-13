@@ -8,6 +8,15 @@ const Bing = require('node-bing-api')({accKey : 'db7b5defd604421194f8c6e8278bb96
 app.use(bodyParser.json());
 app.use(cors());
 
+app.get('/api/searchimage/:searchVal*',(req,res)=>{
+    var searchVal= req.params.searchVal ;
+    var offset = req.query.offset ;
+    
+    res.json({
+        searchVal,
+        offset
+    })
+})
 
 app.get('/', function (req, res) {
   res.send('Hello !')
