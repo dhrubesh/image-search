@@ -5,12 +5,13 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 //apiKey expires in 30 days
 const Bing = require('node-bing-api')({accKey : 'db7b5defd604421194f8c6e8278bb96f'});
-
+mongoose.Promise = Promise;
 const searchTerm = require("./models/searchTerm.js");
 
 app.use(bodyParser.json());
 app.use(cors());
 mongoose.connect('mongodb://localhost/searchTerms')
+
 
 app.get('/api/searchimage/:searchVal*',(req,res)=>{
     var searchVal= req.params.searchVal ;
@@ -22,14 +23,26 @@ app.get('/api/searchimage/:searchVal*',(req,res)=>{
     });
     data.save(err=>{
         if (err){
-            res.send("error in saving to db")
+            return res.send("error in saving to db")
         }
-        res.json(data)
+         res.json(data)
     })
-    // res.json({
-    //     searchVal,
-    //     offset
-    // })
+
+ Bing.images(searchVal,{
+     top:10
+ },function(error,rez,body){
+     var bingData =[]
+     for(var i = 0 ; i<=10;i++){
+         bingData.push({
+             url : body.value[i].webSearchUrl,
+             snippet : body.value[i].name,
+             thumbnail : body.value[i].thumbnail,
+             context : body.value[i].hostPageDisplayUrl
+         });
+     }
+     res.json(bingData)
+ })
+
 })
 
 app.get('/api/recentsearchs',(req,res)=>{
