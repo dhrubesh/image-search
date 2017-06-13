@@ -32,6 +32,14 @@ app.get('/api/searchimage/:searchVal*',(req,res)=>{
     // })
 })
 
+app.get('/api/recentsearchs',(req,res)=>{
+    searchTerm.find({},(err,data)=>
+    {
+    res.json(data)
+    })
+})
+
+
 app.get('/', function (req, res) {
   res.send('Hello !')
 })
