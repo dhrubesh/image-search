@@ -32,6 +32,9 @@ app.get('/api/searchimage/:searchVal*',(req,res)=>{
      top:10
  },function(error,rez,body){
      var bingData =[]
+    //  console.log(error)
+    //  console.log(rez)
+    //  console.log(body)
      for(var i = 0 ; i<=10;i++){
          bingData.push({
              url : body.value[i].webSearchUrl,
